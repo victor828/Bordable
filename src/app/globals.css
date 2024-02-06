@@ -63,6 +63,7 @@ body {
   border-radius: var(--rounded-md, 6px);
   background: var(--primary, #6d28d9);
 }
+
 .btn {
   display: inline-flex;
   height: 36px;
@@ -77,6 +78,22 @@ body {
   background: var(--background, #fff);
   color: var(--secondary-foreground, #262626);
 }
+.btn:hover {
+  background: var(--secondary, #e5e5e5);
+}
+
+.btnBoard {
+  display: flex;
+  height: 36px;
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+
+  border-radius: var(--rounded-md, 6px);
+  background: var(--primary, #6d28d9);
+}
+
 .link {
   color: var(--primary, #6d28d9);
 }
