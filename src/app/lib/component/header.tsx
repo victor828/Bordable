@@ -1,6 +1,11 @@
+import Link from "next/link";
 import { inter } from "../ui/fonts";
 
 export function Header() {
+  /* // todo: agregar las funciones de los botones para la redireccio de pagina
+     todo:  si el usuario existe usamos su id para buscar sus datas donde pogra modificarlos si usta
+     todo: el otro boton cerrara la sesion haciendo experar el token y devolviendolo a la pagina login
+    */
   return (
     <header className="bg-gray-800 py-6 flex justify-between items-center p-16">
       <div className="flex justify-start items-center gap-x-4">
@@ -28,7 +33,7 @@ export function Header() {
             fill="white"
           />
         </svg>
-        <p>Boardable</p>
+        <Link href={"/"}>Boardable</Link>
       </div>
       <div className="flex justify-end items-center gap-x-4">
         <button className={`btn ${inter.className}`}>My Account</button>
