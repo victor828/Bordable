@@ -10,10 +10,12 @@ export const metadata: Metadata = {
   description: "proyect Fullstack based on #NextJS and TailwindCSS.",
 };
 
-export default function RootLayout({children,}: Readonly<{children: React.ReactNode}>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} h-screen`}>{children}</body>
+      <body className={`${inter.className} h-screen bg-white`}>{children}</body>
     </html>
   );
 }

@@ -7,7 +7,7 @@ export function Header() {
      todo: el otro boton cerrara la sesion haciendo experar el token y devolviendolo a la pagina login
     */
   return (
-    <header className="bg-gray-800 py-6 flex justify-between items-center p-16">
+    <header className=" py-6 flex justify-between items-center p-16 bg-white">
       <div className="flex justify-start items-center gap-x-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
