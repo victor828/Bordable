@@ -15,7 +15,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} h-screen bg-white`}>{children}</body>
+      <body className={`${inter.className} h-scrren`}>{children}</body>
     </html>
   );
 }

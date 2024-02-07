@@ -1,21 +1,18 @@
 import { BoardFinal } from "./lib/component/boards/boardFinal";
 import Board from "./lib/component/boards/boart";
 import { Header } from "./lib/component/header";
+import { inter } from "./lib/ui/fonts";
 
 export default function Home() {
   return (
-    <main>
+    <>
       <Header />
-      <section className="container mx-auto grid py-16 w-[80%] max-h-screen gap-8 ">
-        <div className="w-40 grid gap-4">
-          <h1>My Boards</h1>
-          <div className="grid gap-2 ">
+      <main className="content grid gap-8">
+        <div className="w-40 grid gap-2">
+          <h1 className={`${inter.className} text-2xl font-bold`}>My Boards</h1>
+          <div>
             <p>Sort by</p>
-            <select
-              name="sort"
-              id="sort"
-              className="text-black rounded-md p-2 h-10"
-            >
+            <select name="sort" id="sort" className="w-full rounded-md">
               <option value="date" selected>
                 Date
               </option>
@@ -25,7 +22,7 @@ export default function Home() {
         </div>
 
         {/* space for Boards */}
-        <div className="flex  justify-between gap-8 h-full  w-full flex-wrap">
+        <div className="flex gap-8 h-full  w-full flex-wrap">
           <Board />
           <BoardFinal />
           <BoardFinal />
@@ -38,7 +35,7 @@ export default function Home() {
           <BoardFinal />
           <BoardFinal />
         </div>
-      </section>
-    </main>
+      </main>
+    </>
   );
 }
