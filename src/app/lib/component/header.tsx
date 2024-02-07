@@ -36,8 +36,12 @@ export function Header() {
         <Link href={"/"}>Boardable</Link>
       </div>
       <div className="flex justify-end items-center gap-x-4">
-        <button className={`btn ${inter.className}`}>My Account</button>
-        <button className={`btn ${inter.className}`}>Logout</button>
+        <Link href={"account"} className="btn">
+          My Account
+        </Link>
+        <Link href={"login"} className={`btn ${inter.className}`}>
+          Logout
+        </Link>
       </div>
     </header>
   );
