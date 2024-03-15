@@ -29,7 +29,7 @@ exports.up = (pgm) => {
 
   pgm.createTable("tables", {
     boardid: { type: "int" },
-    title: { type: "varchar(50)", unique: true, notNull: true },
+    titleTable: { type: "varchar(50)", unique: true, notNull: true },
     card: { type: "varchar(255)" },
     boardid_fk: {
       type: "integer",
