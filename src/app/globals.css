@@ -99,6 +99,7 @@ input {
   justify-content: center;
   align-items: center;
   gap: var(--spacing-2, 8px);
+  color: #fff;
 
   border-radius: var(--rounded-md, 6px);
   background: var(--primary, #6d28d9);
