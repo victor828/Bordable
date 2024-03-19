@@ -1,14 +1,45 @@
-import Image from "next/image";
-import s from "./index.module.css";
+"use client";
 import { familjen } from "@/app/lib/ui/fonts";
 import Link from "next/link";
+import { initialFormData, token, url } from "@/utils/utils";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const [responseMessage, setResponseMessage] = useState("");
+  const [response2, setResponse2] = useState("");
+  const [formData, setFormData] = useState(initialFormData);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    const nextFormData = { ...formData, [name]: value };
+    setFormData(nextFormData);
+  }
+
+  const serverUrl: string = "/login";
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const response = await axios.post(url + serverUrl, formData);
+      const response2 = response.data.data;
+      const resMessge = response2.message;
+      const token = response.data.data.token;
+
+      sessionStorage.setItem("token", token);
+
+      setResponse2(response2);
+      setResponseMessage(resMessge);
+    } catch (error) {
+      console.error("Error to process the request:", error);
+    }
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center  font-mono text-sm grid justify-center gap-4 ">
         {/* logo */}
-        <div className="grid gap-8 w-80">
+        <div className="grid m-auto gap-8 w-80">
           <div>
             <svg
               className="m-auto"
@@ -44,14 +75,39 @@ export default function Home() {
 
           {/* formulario */}
           <div className="">
-            <form className="grid gap-4" action="" method="post">
+            <form
+              className="grid m-auto gap-4"
+              onSubmit={handleSubmit}
+              method="post"
+            >
               <div className="form_input">
                 <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  placeholder="Username"
+                  maxLength={10}
+                  minLength={3}
+                  pattern="[a-zA-Z0-9]+"
+                  title="Only letters and numbers are allowed"
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="form_input">
                 <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" />
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  name="password"
+                  placeholder="Password"
+                  minLength={6}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <button className="btnL" type="submit">
                 Login
@@ -79,6 +135,17 @@ export default function Home() {
             </svg>
           </div>
         </Link>
+        <div>
+          {response2 === "" ? (
+            <p className="text-center">┗|｀O′|┛ </p>
+          ) : !responseMessage ? (
+            redirect("/")
+          ) : (
+            <p className="w-full bg-[tomato] rounded-md p-2">
+              {responseMessage}
+            </p>
+          )}
+        </div>
       </div>
     </main>
   );
