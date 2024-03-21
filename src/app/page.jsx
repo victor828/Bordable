@@ -27,13 +27,6 @@ export default function Home() {
           },
         });
 
-        response.data.map((board) => {
-          console.log(board);
-          console.log(board.id);
-          console.log(board.title);
-          console.log(board.color);
-        });
-
         setData(response.data);
         if (!response) {
           throw new Error(`Error de red: ${response}`);
