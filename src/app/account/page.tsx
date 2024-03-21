@@ -3,30 +3,31 @@ import { useEffect, useState } from "react";
 import { Header } from "../lib/component/header";
 import { inter } from "../lib/ui/fonts";
 import axios from "axios";
-import { UseVerifyUser, token, url } from "@/utils/utils";
+import { token, url } from "@/utils/utils";
+// todo: Seguir arreglando el cambio de estado para name y email
+
+type FormData = {
+  username?: string;
+  name: string;
+  email: string;
+};
 
 export default function Account() {
   useEffect(() => {
-    UseVerifyUser();
     fetchData();
   }, []);
 
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<FormData | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-  const [formData, setFormData] = useState({
-    username: "",
-    name: "",
-    email: "",
-    password: "",
-  });
-  
+  const [error, setError] = useState(String);
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     const nextFormData = { ...formData, [name]: value };
     setFormData(nextFormData);
   }
-  console.log(formData);
-  console.log(data);
 
   const fetchData = async () => {
     try {
@@ -38,11 +39,17 @@ export default function Account() {
         },
       });
       setData(responseCards.data.data);
-      console.log(responseCards.data.data);
+      setName(responseCards.data.data.name);
+      setEmail(responseCards.data.data.email);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const [formData, setFormData] = useState<FormData>({
+    name: name,
+    email: email,
+  });
 
   const fetchUpdate = async () => {
     try {
@@ -58,12 +65,11 @@ export default function Account() {
       );
 
       setData(responseCards.data.data);
-      console.log(responseCards);
+      setError(responseCards.data.data.message.detail);
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <div className="container">
       <Header />
@@ -75,9 +81,11 @@ export default function Account() {
             <div className="form_input">
               <label htmlFor="username">Username</label>
               <input
+                className="border-[tomato]"
                 disabled
                 type="text"
-                placeholder={data.username || ""}
+                value={data?.username}
+                placeholder={data?.username || "user"}
                 id="username"
                 name="username"
                 onChange={handleChange}
@@ -88,6 +96,8 @@ export default function Account() {
               <input
                 type="name"
                 id="name"
+                defaultValue={name}
+                placeholder={name}
                 name="name"
                 onChange={handleChange}
               />
@@ -97,13 +107,24 @@ export default function Account() {
               <input
                 type="email"
                 id="email"
+                defaultValue={email}
+                placeholder={email}
                 onChange={handleChange}
                 name="email"
               />
+              {!error ? (
+                <p></p>
+              ) : (
+                <p className="bg-[tomato] rounded-md px-2">
+                  The email are exist, chose other please
+                </p>
+              )}
             </div>
             <div className="form_input">
               <label htmlFor="password">Password</label>
               <input
+                disabled
+                className="border-[tomato]"
                 placeholder="password"
                 type="password"
                 id="password"

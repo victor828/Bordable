@@ -87,7 +87,8 @@ export default function Home() {
                   id="username"
                   name="username"
                   value={formData.username}
-                  placeholder="Username"
+                  // placeholder="Username"
+                  placeholder="lalo"
                   maxLength={10}
                   minLength={3}
                   pattern="[a-zA-Z0-9]+"
@@ -103,7 +104,8 @@ export default function Home() {
                   id="password"
                   value={formData.password}
                   name="password"
-                  placeholder="Password"
+                  placeholder="123456"
+                  // placeholder="Password"
                   minLength={6}
                   onChange={handleChange}
                   required
