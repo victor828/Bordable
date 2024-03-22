@@ -1,5 +1,5 @@
 "use client";
-import { UseVerifyUser, url } from "@/utils/utils";
+import { UseVerifyUser, token, url } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Header } from "../lib/component/header";
@@ -12,58 +12,56 @@ import Card from "../lib/component/tables/card";
 
 export default function Board() {
   UseVerifyUser();
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [tables, setTables] = useState([]);
   const [cards, setCards] = useState([]);
+  const [name, setName] = useState("");
   const paramObj = {
     [searchParams[0]]: searchParams[1],
   };
-
-  // console.log(cards);
-  console.log(tables);
-  // console.log(paramObj);
-
   //! useEffect
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = sessionStorage.getItem("token");
-        const response = await axios.get(url + `/board/${paramObj.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        const responseCards = await axios.get(url + `/board/table/card/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        // console.log(responseCards.data);
-        setCards(responseCards.data);
-
-        // console.log(response.data.data);
-        setTables(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchData();
-  }, [paramObj.id]);
+  }, [paramObj.id, tables]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(url + `/board/${paramObj.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseCards = await axios.get(url + `/board/table/card/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const myBoard = await axios.get(url + `/get-board/${paramObj.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      setName(myBoard.data.title);
+      setCards(responseCards.data);
+
+      setTables(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <Header />
       <main className=" bg-[#FECACA] h-screen ">
+        <Header />
         <div className="max-w-[90%] m-auto py-4 grid gap-8 ">
           <div className="flex gap-2 ">
-            <h1 className={`${inter.className} font-bold text-2xl`}>
-              My board title
-            </h1>
+            <h1 className={`${inter.className} font-bold text-2xl`}>{name}</h1>
             <div className="grid items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +96,7 @@ export default function Board() {
           </div>
 
           {/* cuerpo*/}
-          <div className="flex gap-4">
+          <div className="flex gap-4 ">
             {/* <Options /> */}
             {/* //! funcion to render tables and cards, DONT TOCH! */}
             {tables &&
@@ -117,7 +115,14 @@ export default function Board() {
                     {cards &&
                       cards.map((card) => {
                         if (card.tableid === table.id) {
-                          return <Card key={card.id} title={card.title} />;
+                          return (
+                            <Card
+                              key={card.id}
+                              title={card.title}
+                              data={card}
+                              board={table.boardid}
+                            />
+                          );
                         }
                         return null;
                       })}
