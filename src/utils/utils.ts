@@ -1,16 +1,17 @@
 import axios, { Method } from "axios";
-import {  ReadonlyURLSearchParams,  redirect } from "next/navigation";
+import {  ReadonlyURLSearchParams, useRouter } from "next/navigation";
 
 
 export const url = "http://localhost:5500";
 export const token: string | null = sessionStorage.getItem("token");
 
+
 export async function UseVerifyUser() {
+  const router = useRouter();
 
   if (!token) {
-    return redirect('/login');
+    router.push('/login');
   } else {
-
     const response = await axios.get(url +'/account',  {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -18,12 +19,12 @@ export async function UseVerifyUser() {
     });
     
     if (!response.data.ok) {
-      // Si la verificación del token falla, redirige al usuario a la página de inicio de sesión
       console.log("Unauthorized");
-      redirect('/login');
+      router.push('/login');
     }
   }
 }
+
 
 
 
@@ -71,9 +72,4 @@ export function getParams(searchParams: ReadonlyURLSearchParams) {
   return paramObj;
 }
 
-/* //* function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-  const { name, value } = event.target;
-  const nextFormData = { ...formData, [name]: value };
-  setFormData(nextFormData);
-}
-*/
+

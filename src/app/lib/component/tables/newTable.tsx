@@ -34,6 +34,8 @@ export default function NewTable() {
           },
         }
       );
+      window.location.reload();
+
       console.log(result);
     } catch (error) {
       console.error("Error creating new table:", error);
@@ -44,15 +46,17 @@ export default function NewTable() {
     <form
       id={"nexForm"}
       onSubmit={handleCreate}
-      className='w-72 bg-[#F5F5F5]  rounded-md grid gap-2 p-2'>
-      <div className='grid gap-2 w-full'>
-        <label htmlFor='title'>List Title</label>
-        <input onChange={handleChange} type='text' id='title' name='title' />
+      className="w-72 bg-[#F5F5F5]  rounded-md grid gap-2 p-2 h-32"
+    >
+      <div className="grid gap-2 w-full">
+        <label htmlFor="title">List Title</label>
+        <input onChange={handleChange} type="text" id="title" name="title" />
       </div>
       <button
         // href={`/board`}
-        type='submit'
-        className='w-[50%] h-9 bg-violet-700 justify-center p-2 text-white rounded-md'>
+        type="submit"
+        className="w-[50%] h-9 bg-violet-700 justify-center p-2 text-white rounded-md"
+      >
         Create new list
       </button>
     </form>
