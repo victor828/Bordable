@@ -10,7 +10,7 @@ import NewBoards from "./lib/component/boards/boart";
 
 const serverUrl = "/board";
 export default function Home() {
-  UseVerifyUser();
+  // UseVerifyUser();
 
   const [data, setData] = useState([]);
 
@@ -39,7 +39,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, []);
+  }, [data]);
 
   // function handleRedirect() {
   //   redirect("/board");

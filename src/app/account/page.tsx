@@ -8,16 +8,17 @@ import { token, url } from "@/utils/utils";
 
 type FormData = {
   username?: string;
-  name: string;
-  email: string;
+  name: string | undefined;
+  email: string | undefined;
+  ok?: boolean;
 };
 
 export default function Account() {
+  const [data, setData] = useState<FormData | null>(null);
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [data]);
 
-  const [data, setData] = useState<FormData | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -47,8 +48,8 @@ export default function Account() {
   };
 
   const [formData, setFormData] = useState<FormData>({
-    name: name,
-    email: email,
+    name: data?.name,
+    email: data?.email,
   });
 
   const fetchUpdate = async () => {
@@ -65,6 +66,8 @@ export default function Account() {
       );
 
       setData(responseCards.data.data);
+      console.log(responseCards.data.ok);
+
       setError(responseCards.data.data.message.detail);
     } catch (error) {
       console.log(error);
@@ -136,6 +139,13 @@ export default function Account() {
               Update
             </button>
           </form>
+          {data?.ok === undefined ? (
+            <p className="hidden"></p>
+          ) : data.ok === true ? (
+            <p>The data is updated</p>
+          ) : (
+            <p>error</p>
+          )}
           <button className="btnL">Delete my account</button>
         </div>
       </div>
