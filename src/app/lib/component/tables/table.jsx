@@ -4,11 +4,37 @@ import axios from "axios";
 import { InitialtableData, token, url } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import { OptionsTable } from "./options";
+import { useDrop } from "react-dnd";
+import { useDrag } from "react-dnd";
 
 export default function Table({ title, id, children, height }) {
   const [hidden, setHidden] = useState("hidden");
   const [formData, setFormData] = useState(InitialtableData);
   const searchParams = useSearchParams();
+
+  const [, dropRef] = useDrop({
+    accept: "card",
+    drop: async (item, monitor) => {
+      const cardId = item.id;
+      // console.log(`el id del card es: ${cardId}`);
+      // console.log(`el id del table es: ${id}`);
+      try {
+        await axios.patch(
+          url + `/card/${cardId}/new-table/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(`Card ${cardId} was dropped on table ${id}`);
+      } catch (error) {
+        console.error(`Error updating card ${cardId}:`, error);
+      }
+    },
+  });
 
   const paramObj = {
     [searchParams.toString().split("=")[0]]: searchParams
@@ -73,7 +99,7 @@ export default function Table({ title, id, children, height }) {
   }
 
   return (
-    <div className="grid h-fit">
+    <div className="grid h-fit" ref={dropRef}>
       <section
         className={`rounded-md w-72  p-2 grid   gap-2 bg-[#F5F5F5]`}
         // style={{ height: height }}

@@ -9,6 +9,8 @@ import axios from "axios";
 import NewTable from "../lib/component/tables/newTable";
 import { Options } from "../lib/component/tables/options";
 import Card from "../lib/component/tables/card";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function Board() {
   UseVerifyUser();
@@ -39,6 +41,7 @@ export default function Board() {
           "Content-Type": "application/json",
         },
       });
+
       const myBoard = await axios.get(url + `/get-board/${paramObj.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,7 +51,6 @@ export default function Board() {
 
       setName(myBoard.data.title);
       setCards(responseCards.data);
-
       setTables(response.data.data);
     } catch (error) {
       console.log(error);
@@ -97,38 +99,38 @@ export default function Board() {
 
           {/* cuerpo*/}
           <div className="flex gap-4 ">
-            {/* <Options /> */}
-            {/* //! funcion to render tables and cards, DONT TOCH! */}
-            {tables &&
-              tables.map((table) => {
-                // console.log(table.cardscount);
-                const height = table.cardscount < 1 ? "100px" : "auto";
+            <DndProvider backend={HTML5Backend}>
+              {/* <Options /> */}
+              {/* //! funcion to render tables and cards, DONT TOCH! */}
+              {tables &&
+                tables.map((table) => {
+                  // console.log(table.cardscount);
 
-                return (
-                  <Table
-                    key={table.id}
-                    id={table.id}
-                    height={height}
-                    title={table.title}
-                    cards={table.cardscount}
-                  >
-                    {cards &&
-                      cards.map((card) => {
-                        if (card.tableid === table.id) {
-                          return (
-                            <Card
-                              key={card.id}
-                              title={card.title}
-                              data={card}
-                              board={table.boardid}
-                            />
-                          );
-                        }
-                        return null;
-                      })}
-                  </Table>
-                );
-              })}
+                  return (
+                    <Table
+                      key={table.id}
+                      id={table.id}
+                      title={table.title}
+                      cards={table.cardscount}
+                    >
+                      {cards &&
+                        cards.map((card) => {
+                          if (card.tableid === table.id) {
+                            return (
+                              <Card
+                                key={card.id}
+                                title={card.title}
+                                data={card}
+                                board={table.boardid}
+                              />
+                            );
+                          }
+                          return null;
+                        })}
+                    </Table>
+                  );
+                })}
+            </DndProvider>
             <NewTable />
           </div>
           {/* <div className='flex gap-4'>{cards && <Card cards={cards} />}</div> */}

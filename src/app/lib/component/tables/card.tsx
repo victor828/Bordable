@@ -1,12 +1,21 @@
 import { getParams, token, url } from "@/utils/utils";
+import { useDrag } from "react-dnd";
 import axios from "axios";
 import { useState } from "react";
 
 export default function Card({ title, data, board }: any) {
   const [show, setShow] = useState("hidden");
   const [name, setName] = useState("");
-  const pathCard = `/board/${board}/table/${data.tableid}/card/${data.id}`;
 
+  const [{ isDragging }, dragRef] = useDrag({
+    type: "card",
+    item: { id: data.id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const pathCard = `/board/${board}/table/${data.tableid}/card/${data.id}`;
   const handleShow = () => {
     show === "hidden" ? setShow("") : setShow("hidden");
   };
@@ -46,12 +55,13 @@ export default function Card({ title, data, board }: any) {
   }
 
   return (
-    <section className="relative  ">
+    <section className="relative" ref={dragRef}>
       <div
         draggable
         className="flex justify-between items-center text-l  py-1.5 shadow-md rounded-md p-2  hover:bg-slate-400"
       >
         <p>{title}</p>
+        {isDragging && "📦"}
         {/* <button type="button"> */}
         <button type="button" onClick={handleShow}>
           <svg
