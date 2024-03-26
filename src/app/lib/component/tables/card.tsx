@@ -1,11 +1,13 @@
 import { getParams, token, url } from "@/utils/utils";
 import { useDrag } from "react-dnd";
 import axios from "axios";
-import { useState } from "react";
+import { createRef, useEffect, useState } from "react";
 
 export default function Card({ title, data, board }: any) {
   const [show, setShow] = useState("hidden");
   const [name, setName] = useState("");
+  const [hiddenP, setHiddenP] = useState("");
+  const [hiddenF, setHiddenF] = useState("hidden");
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "card",
@@ -49,9 +51,25 @@ export default function Card({ title, data, board }: any) {
       console.log(result);
       // window.location.reload();
       setShow("hidden");
+      hiddenP === "" ? setHiddenP("hidden") : setHiddenP("");
+      hiddenF === "hidden" ? setHiddenF("") : setHiddenF("hidden");
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleUpdateTitle() {
+    /* //todo: 
+    * 1- esconter el `parrafo`
+    * 2- mostrar el formulario
+    que hacer:
+      si precionamos el boton edit tenemos que esconder el `parrafo` y mostrar el `formulario` entonces necesitaremos 2 nuevas variables
+      * 1- hideenP: escondera y ostrara el parrafo
+      * 2- hiddenF: escondera y mostrara el formulario
+      * 3- necesitaremos un boton que realice la peticion y restaure los hidden para que solo se muestre p y no el form
+      */
+    hiddenP === "" ? setHiddenP("hidden") : setHiddenP("");
+    hiddenF === "hidden" ? setHiddenF("") : setHiddenF("hidden");
   }
 
   return (
@@ -60,7 +78,21 @@ export default function Card({ title, data, board }: any) {
         draggable
         className="flex justify-between items-center text-l  py-1.5 shadow-md rounded-md p-2  hover:bg-slate-400"
       >
-        <p>{title}</p>
+        <p className={`${hiddenP}`}>{title}</p>
+        <section className={`${hiddenF}`}>
+          <form>
+            <textarea
+              className=" resize-none h-24 text-pretty"
+              defaultValue={title}
+              name="name"
+              id="name"
+              minLength={10}
+              wrap="soft"
+              required
+              onChange={(e) => setName(e.target.value)}
+            />
+          </form>
+        </section>
         {isDragging && "📦"}
         {/* <button type="button"> */}
         <button type="button" onClick={handleShow}>
@@ -103,7 +135,7 @@ export default function Card({ title, data, board }: any) {
           <button
             className="w-full font-semibold p-1 rounded text-start hover:bg-[#D9D9D9]"
             type="submit"
-            onClick={handleUpdate}
+            onClick={handleUpdateTitle}
           >
             Edit
           </button>
@@ -114,19 +146,14 @@ export default function Card({ title, data, board }: any) {
           >
             Delete
           </button>
+          <button
+            className={`w-full font-semibold text-start p-1 rounded hover:bg-[#D9D9D9] ${hiddenF}`}
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
         </section>
       </article>
-      <section className={`${show}`}>
-        <form>
-          <label htmlFor="name">new name</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </form>
-      </section>
     </section>
   );
 }
