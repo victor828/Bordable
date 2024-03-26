@@ -39,6 +39,7 @@ export default function NewBoards() {
           <label htmlFor="title">Title</label>
           <input
             className="rounded-sm p-1"
+            required
             type="text"
             id="title"
             name="title"
@@ -46,7 +47,7 @@ export default function NewBoards() {
             placeholder="Enter title... "
           />
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center">
             <label htmlFor="color">Color</label>
             {/* <input type="color" name="color" id="color" /> */}
@@ -67,7 +68,7 @@ export default function NewBoards() {
       </form>
       {/* cambio de color */}
       <section
-        className={`bg-white ${
+        className={`bg-white border border-black border-opacity-20 ${
           hidden ? "" : "hidden"
         } absolute left-[335px] bottom-[441px] 
         rounded-md w-[124px] h-[68px] gap-1 grid grid-cols-4 grid-rows-2 p-2 rounded-2`}
