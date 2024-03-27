@@ -10,39 +10,34 @@ import NewBoards from "./lib/component/boards/boart";
 
 const serverUrl = "/board";
 export default function Home() {
-  // UseVerifyUser();
-
   const [data, setData] = useState([]);
 
+  const token = sessionStorage.getItem("token");
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = sessionStorage.getItem("token");
-
-        const response = await axios.get(url + serverUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // Ajusta según tus necesidades
-          },
-        });
-
-        setData(response.data);
-        if (!response) {
-          throw new Error(`Error de red: ${response}`);
-        }
-
-        const data = response;
-      } catch (error) {
-        console.error("Error al realizar la solicitud:", error);
-      }
-    };
-
+    token ?? redirect("/login");
     fetchData();
   }, [data]);
 
-  // function handleRedirect() {
-  //   redirect("/board");
-  // }
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(url + serverUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      setData(response.data);
+      if (!response) {
+        throw new Error(`Error de red: ${response}`);
+      }
+
+      const data = response;
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -58,9 +53,7 @@ export default function Home() {
               id="sort"
               className="w-full rounded-md"
             >
-              <option value="date" selected>
-                Date
-              </option>
+              <option value="date">Date</option>
               <option value="name">Name</option>
             </select>
           </div>
@@ -75,8 +68,6 @@ export default function Home() {
               title={board.title}
               color={board.color}
               id={board.id}
-              // handleRedirect={handleRedirect}
-              s
             />
           ))}
         </div>

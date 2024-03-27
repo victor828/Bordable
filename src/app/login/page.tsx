@@ -102,6 +102,7 @@ export default function Home() {
                 <input
                   type="password"
                   id="password"
+                  autoComplete="true"
                   value={formData.password}
                   name="password"
                   // value="123456"
@@ -130,9 +131,9 @@ export default function Home() {
               <path
                 d="M3.83325 7.99998H13.1666M13.1666 7.99998L8.49992 3.33331M13.1666 7.99998L8.49992 12.6666"
                 stroke="#6D28D9"
-                stroke-width="1.33"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.33"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </div>

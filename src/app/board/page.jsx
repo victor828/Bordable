@@ -1,19 +1,17 @@
 "use client";
 import { UseVerifyUser, token, url } from "@/utils/utils";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Header } from "../lib/component/header";
 import Table from "../lib/component/tables/table";
 import { inter } from "../lib/ui/fonts";
 import axios from "axios";
 import NewTable from "../lib/component/tables/newTable";
-import { Options } from "../lib/component/tables/options";
 import Card from "../lib/component/tables/card";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function Board() {
-  UseVerifyUser();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tables, setTables] = useState([]);
   const [cards, setCards] = useState([]);
@@ -23,8 +21,10 @@ export default function Board() {
   };
   //! useEffect
   useEffect(() => {
+    token ?? redirect("/login");
+
     fetchData();
-  }, [paramObj.id, tables]);
+  }, [tables]);
 
   const fetchData = async () => {
     try {
@@ -58,84 +58,51 @@ export default function Board() {
   };
 
   return (
-    <>
-      <main className=" bg-[#FECACA] h-screen ">
-        <Header />
-        <div className="max-w-[90%] m-auto py-4 grid gap-8 ">
-          <div className="flex gap-2 ">
-            <h1 className={`${inter.className} font-bold text-2xl`}>{name}</h1>
-            <div className="grid items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
-                  stroke="#525252"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
-                  stroke="#525252"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
-                  stroke="#525252"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* cuerpo*/}
-          <div className="flex gap-4 ">
-            <DndProvider backend={HTML5Backend}>
-              {/* <Options /> */}
-              {/* //! funcion to render tables and cards, DONT TOCH! */}
-              {tables &&
-                tables.map((table) => {
-                  // console.log(table.cardscount);
-
-                  return (
-                    <Table
-                      key={table.id}
-                      id={table.id}
-                      title={table.title}
-                      cards={table.cardscount}
-                    >
-                      {cards &&
-                        cards.map((card) => {
-                          if (card.tableid === table.id) {
-                            return (
-                              <Card
-                                key={card.id}
-                                title={card.title}
-                                data={card}
-                                board={table.boardid}
-                              />
-                            );
-                          }
-                          return null;
-                        })}
-                    </Table>
-                  );
-                })}
-            </DndProvider>
-            <NewTable />
-          </div>
-          {/* <div className='flex gap-4'>{cards && <Card cards={cards} />}</div> */}
+    <main className=" bg-[#FECACA] h-screen ">
+      <Header />
+      <div className="max-w-[90%] m-auto py-4 grid gap-8 ">
+        <div className="flex gap-2 ">
+          <h1 className={`${inter.className} font-bold text-2xl`}>{name}</h1>
         </div>
-      </main>
-    </>
+
+        {/* cuerpo*/}
+        <div className="flex gap-4 ">
+          <DndProvider backend={HTML5Backend}>
+            {/* <Options /> */}
+            {/* //! function to render tables and cards, DONT TOCH! */}
+            {tables &&
+              tables.map((table) => {
+                // console.log(table.cardscount);
+
+                return (
+                  <Table
+                    key={table.id}
+                    id={table.id}
+                    title={table.title}
+                    cards={table.cardscount}
+                  >
+                    {cards &&
+                      cards.map((card) => {
+                        if (card.tableid === table.id) {
+                          return (
+                            <Card
+                              key={card.id}
+                              title={card.title}
+                              data={card}
+                              board={table.boardid}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                  </Table>
+                );
+              })}
+          </DndProvider>
+          <NewTable />
+        </div>
+        {/* <div className='flex gap-4'>{cards && <Card cards={cards} />}</div> */}
+      </div>
+    </main>
   );
 }
