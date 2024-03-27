@@ -12,8 +12,8 @@ const serverUrl = "/board";
 export default function Home() {
   const [data, setData] = useState([]);
 
+  const token = sessionStorage.getItem("token");
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
     token ?? redirect("/login");
     fetchData();
   }, [data]);
@@ -53,9 +53,7 @@ export default function Home() {
               id="sort"
               className="w-full rounded-md"
             >
-              <option value="date" selected>
-                Date
-              </option>
+              <option value="date">Date</option>
               <option value="name">Name</option>
             </select>
           </div>

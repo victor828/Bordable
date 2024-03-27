@@ -5,7 +5,7 @@ import { inter } from "../lib/ui/fonts";
 import axios from "axios";
 import { token, url } from "@/utils/utils";
 import { redirect } from "next/navigation";
-// todo: Seguir arreglando el cambio de estado para name y email
+import { setTimeout } from "timers";
 
 type FormData = {
   username?: string;
@@ -15,16 +15,17 @@ type FormData = {
 };
 
 export default function Account() {
+  const [error, setError] = useState("");
+  const [succes, setSucces] = useState(false);
+
   const [data, setData] = useState<FormData | null>(null);
   useEffect(() => {
     token ?? redirect("/login");
     fetchData();
-  }, [data]);
+  }, [error, succes]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
-  const [error, setError] = useState(String);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -66,15 +67,31 @@ export default function Account() {
           },
         }
       );
-
+      setSucces(responseCards.data.ok);
       setData(responseCards.data.data);
-      console.log(responseCards.data.ok);
-
       setError(responseCards.data.data.message.detail);
+      setTimeout(() => {
+        setError("");
+        setSucces(false);
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const deleteAccount = async () => {
+    try {
+      await axios.delete(url + `/delete-user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container">
       <Header />
@@ -141,14 +158,18 @@ export default function Account() {
               Update
             </button>
           </form>
-          {data?.ok === undefined ? (
+          {succes === true && error ? (
             <p className="hidden"></p>
-          ) : data.ok === true ? (
-            <p>The data is updated</p>
+          ) : succes === true ? (
+            <p className="bg-green-400 text-center rounded-md p-2">
+              The data is updated
+            </p>
           ) : (
-            <p>error</p>
+            <p className="hidden"></p>
           )}
-          <button className="btnL">Delete my account</button>
+          <button className="btnL" onClick={deleteAccount}>
+            Delete my account
+          </button>
         </div>
       </div>
     </div>
