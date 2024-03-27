@@ -3,13 +3,7 @@ import axios from "axios";
 import { BoardFinal } from "./lib/component/boards/boardFinal";
 import { Header } from "./lib/component/header";
 import { inter } from "./lib/ui/fonts";
-import {
-  UseVerifyUser,
-  initialFormData,
-  token,
-  url,
-  verifyUser,
-} from "@/utils/utils";
+import { UseVerifyUser, initialFormData, url, verifyUser } from "@/utils/utils";
 import React, { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import NewBoards from "./lib/component/boards/boart";
@@ -19,33 +13,30 @@ export default function Home() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    const token = sessionStorage.getItem("token");
     token ?? redirect("/login");
-
-    const fetchData = async () => {
-      try {
-        // const token = sessionStorage.getItem("token");
-        const token = sessionStorage.getItem("token");
-
-        const response = await axios.get(url + serverUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // Ajusta según tus necesidades
-          },
-        });
-
-        setData(response.data);
-        if (!response) {
-          throw new Error(`Error de red: ${response}`);
-        }
-
-        const data = response;
-      } catch (error) {
-        console.error("Error al realizar la solicitud:", error);
-      }
-    };
-
     fetchData();
   }, [data]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(url + serverUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      setData(response.data);
+      if (!response) {
+        throw new Error(`Error de red: ${response}`);
+      }
+
+      const data = response;
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+    }
+  };
 
   return (
     <>
@@ -79,8 +70,6 @@ export default function Home() {
               title={board.title}
               color={board.color}
               id={board.id}
-              // handleRedirect={handleRedirect}
-              s
             />
           ))}
         </div>
