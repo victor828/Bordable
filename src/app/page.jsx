@@ -3,18 +3,24 @@ import axios from "axios";
 import { BoardFinal } from "./lib/component/boards/boardFinal";
 import { Header } from "./lib/component/header";
 import { inter } from "./lib/ui/fonts";
-import { UseVerifyUser, initialFormData, url, verifyUser } from "@/utils/utils";
+import {
+  UseVerifyUser,
+  initialFormData,
+  token,
+  url,
+  verifyUser,
+} from "@/utils/utils";
 import React, { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import NewBoards from "./lib/component/boards/boart";
 
 const serverUrl = "/board";
 export default function Home() {
-  // UseVerifyUser();
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    token ?? redirect("/login");
+
     const fetchData = async () => {
       try {
         // const token = sessionStorage.getItem("token");
@@ -41,9 +47,6 @@ export default function Home() {
     fetchData();
   }, [data]);
 
-  // function handleRedirect() {
-  //   redirect("/board");
-  // }
   return (
     <>
       <Header />
