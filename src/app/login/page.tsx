@@ -26,7 +26,9 @@ export default function Home() {
       const resMessge = response2.message;
       const token = response.data.data.token;
 
-      localStorage.setItem("token", token);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", token);
+      }
 
       setResponse2(response2);
       setResponseMessage(resMessge);
