@@ -4,6 +4,7 @@ import { Header } from "../lib/component/header";
 import { inter } from "../lib/ui/fonts";
 import axios from "axios";
 import { token, url } from "@/utils/utils";
+import { redirect } from "next/navigation";
 // todo: Seguir arreglando el cambio de estado para name y email
 
 type FormData = {
@@ -16,6 +17,7 @@ type FormData = {
 export default function Account() {
   const [data, setData] = useState<FormData | null>(null);
   useEffect(() => {
+    token ?? redirect("/login");
     fetchData();
   }, [data]);
 
