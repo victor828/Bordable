@@ -44,10 +44,6 @@ export const InitialtableData = {
   title: "",
 };
 
-// export const token: string | null = sessionStorage.getItem("token");
-
-// ----------tables-----------------
-// edit table
 export async function handleAxios(
   petitionType: Method,
   path: string,

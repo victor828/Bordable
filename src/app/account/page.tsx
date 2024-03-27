@@ -4,7 +4,6 @@ import { Header } from "../lib/component/header";
 import { inter } from "../lib/ui/fonts";
 import axios from "axios";
 import { token, url } from "@/utils/utils";
-// todo: Seguir arreglando el cambio de estado para name y email
 
 type FormData = {
   username?: string;
@@ -32,7 +31,6 @@ export default function Account() {
 
   const fetchData = async () => {
     try {
-      const token = sessionStorage.getItem("token");
       const responseCards = await axios.get(url + `/account`, {
         headers: {
           Authorization: `Bearer ${token}`,

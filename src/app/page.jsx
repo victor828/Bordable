@@ -17,7 +17,6 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const token = sessionStorage.getItem("token");
         const token = sessionStorage.getItem("token");
 
         const response = await axios.get(url + serverUrl, {

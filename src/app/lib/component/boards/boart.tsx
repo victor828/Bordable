@@ -1,4 +1,4 @@
-import { InitialBoardData, initialFormData, url } from "@/utils/utils";
+import { InitialBoardData, initialFormData, token, url } from "@/utils/utils";
 import axios from "axios";
 import { useState } from "react";
 
@@ -16,7 +16,6 @@ export default function NewBoards() {
 
   const handleCreate = async () => {
     try {
-      const token = sessionStorage.getItem("token");
       const options = {
         headers: {
           Authorization: `Bearer ${token}`,
