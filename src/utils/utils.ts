@@ -3,7 +3,7 @@ import {  ReadonlyURLSearchParams, redirect } from "next/navigation";
 
 
 export const url = "http://localhost:5500";
-export const token: string | null = sessionStorage.getItem("token");
+export const token: string | null = localStorage.getItem("token");
 
 
 

@@ -43,7 +43,7 @@ export function Header() {
           href={"/login"}
           className={`btn ${inter.className}`}
           onClick={() => {
-            sessionStorage.removeItem("token");
+            localStorage.removeItem("token");
           }}
         >
           Logout

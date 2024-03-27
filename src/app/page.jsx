@@ -12,7 +12,7 @@ const serverUrl = "/board";
 export default function Home() {
   const [data, setData] = useState([]);
 
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   useEffect(() => {
     token ?? redirect("/login");
     fetchData();
