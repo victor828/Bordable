@@ -116,7 +116,7 @@ input {
 
 .content {
   display: grid;
-  width: 1024px;
+  width: 85%;
   padding: var(--spacing-16, 64px) 0px;
   align-items: flex-start;
   gap: 82px;

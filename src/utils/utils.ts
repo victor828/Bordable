@@ -1,32 +1,9 @@
 import axios, { Method } from "axios";
-import {  ReadonlyURLSearchParams, useRouter } from "next/navigation";
+import {  ReadonlyURLSearchParams, redirect } from "next/navigation";
 
 
 export const url = "http://localhost:5500";
 export const token: string | null = sessionStorage.getItem("token");
-
-
-export async function UseVerifyUser() {
-  const router = useRouter();
-
-  if (!token) {
-    router.push('/login');
-  } else {
-    const response = await axios.get(url +'/account',  {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    
-    if (!response.data.ok) {
-      console.log("Unauthorized");
-      router.push('/login');
-    }
-  }
-}
-
-
-
 
 
 

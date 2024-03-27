@@ -3,7 +3,7 @@ import { getParams, handleAxios, token, url } from "@/utils/utils";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 
-export function OptionsTable(id, handleUpdate, hidden) {
+export function OptionsTable(id, handleUpdate, hidden, func) {
   const searchParams = useSearchParams();
   const param = getParams(searchParams);
   const pathTable = `/board/${param.id}/table/${id.id}`;
@@ -38,13 +38,13 @@ export function OptionsTable(id, handleUpdate, hidden) {
 
   return (
     <article
-      className={`w-24 rounded-md bg-[#f5f5f5] border border-dark hover box-border p-1 hidden`}
+      className={`w-24 rounded-md bg-[#f5f5f5] border border-dark hover box-border p-1 absolute top-[-32px] right-[26px] ${hidden}`}
     >
       <section>
         <button
           className="w-full font-semibold p-1 rounded text-start hover:bg-[#D9D9D9]"
           type="submit"
-          onClick={handleUpdate}
+          onClick={func}
         >
           Edit
         </button>
@@ -55,6 +55,13 @@ export function OptionsTable(id, handleUpdate, hidden) {
           onClick={handleDelete}
         >
           Delete
+        </button>
+        <button
+          type="button"
+          className="w-full font-semibold text-start p-1 rounded hover:bg-[#D9D9D9] hidden"
+          onClick={handleUpdate}
+        >
+          Update
         </button>
       </section>
     </article>

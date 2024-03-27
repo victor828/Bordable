@@ -1,12 +1,23 @@
 import { getParams, token, url } from "@/utils/utils";
+import { useDrag } from "react-dnd";
 import axios from "axios";
-import { useState } from "react";
+import { createRef, useEffect, useState } from "react";
 
 export default function Card({ title, data, board }: any) {
   const [show, setShow] = useState("hidden");
   const [name, setName] = useState("");
-  const pathCard = `/board/${board}/table/${data.tableid}/card/${data.id}`;
+  const [hiddenP, setHiddenP] = useState("");
+  const [hiddenF, setHiddenF] = useState("hidden");
 
+  const [{ isDragging }, dragRef] = useDrag({
+    type: "card",
+    item: { id: data.id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const pathCard = `/board/${board}/table/${data.tableid}/card/${data.id}`;
   const handleShow = () => {
     show === "hidden" ? setShow("") : setShow("hidden");
   };
@@ -40,18 +51,49 @@ export default function Card({ title, data, board }: any) {
       console.log(result);
       // window.location.reload();
       setShow("hidden");
+      hiddenP === "" ? setHiddenP("hidden") : setHiddenP("");
+      hiddenF === "hidden" ? setHiddenF("") : setHiddenF("hidden");
     } catch (error) {
       console.log(error);
     }
   }
 
+  function handleUpdateTitle() {
+    /* //todo: 
+    * 1- esconter el `parrafo`
+    * 2- mostrar el formulario
+    que hacer:
+      si precionamos el boton edit tenemos que esconder el `parrafo` y mostrar el `formulario` entonces necesitaremos 2 nuevas variables
+      * 1- hideenP: escondera y ostrara el parrafo
+      * 2- hiddenF: escondera y mostrara el formulario
+      * 3- necesitaremos un boton que realice la peticion y restaure los hidden para que solo se muestre p y no el form
+      */
+    hiddenP === "" ? setHiddenP("hidden") : setHiddenP("");
+    hiddenF === "hidden" ? setHiddenF("") : setHiddenF("hidden");
+  }
+
   return (
-    <section className="relative  ">
+    <section className="relative" ref={dragRef}>
       <div
         draggable
         className="flex justify-between items-center text-l  py-1.5 shadow-md rounded-md p-2  hover:bg-slate-400"
       >
-        <p>{title}</p>
+        <p className={`${hiddenP}`}>{title}</p>
+        <section className={`${hiddenF}`}>
+          <form>
+            <textarea
+              className=" resize-none h-24 text-pretty"
+              defaultValue={title}
+              name="name"
+              id="name"
+              minLength={10}
+              wrap="soft"
+              required
+              onChange={(e) => setName(e.target.value)}
+            />
+          </form>
+        </section>
+        {isDragging && "📦"}
         {/* <button type="button"> */}
         <button type="button" onClick={handleShow}>
           <svg
@@ -64,23 +106,23 @@ export default function Card({ title, data, board }: any) {
             <path
               d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
               stroke="#525252"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
               stroke="#525252"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
               stroke="#525252"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </button>
@@ -93,7 +135,7 @@ export default function Card({ title, data, board }: any) {
           <button
             className="w-full font-semibold p-1 rounded text-start hover:bg-[#D9D9D9]"
             type="submit"
-            onClick={handleUpdate}
+            onClick={handleUpdateTitle}
           >
             Edit
           </button>
@@ -104,19 +146,14 @@ export default function Card({ title, data, board }: any) {
           >
             Delete
           </button>
+          <button
+            className={`w-full font-semibold text-start p-1 rounded hover:bg-[#D9D9D9] ${hiddenF}`}
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
         </section>
       </article>
-      <section className={`${show}`}>
-        <form>
-          <label htmlFor="name">new name</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </form>
-      </section>
     </section>
   );
 }

@@ -39,6 +39,7 @@ export default function NewBoards() {
           <label htmlFor="title">Title</label>
           <input
             className="rounded-sm p-1"
+            required
             type="text"
             id="title"
             name="title"
@@ -46,7 +47,7 @@ export default function NewBoards() {
             placeholder="Enter title... "
           />
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center">
             <label htmlFor="color">Color</label>
             {/* <input type="color" name="color" id="color" /> */}
@@ -67,7 +68,7 @@ export default function NewBoards() {
       </form>
       {/* cambio de color */}
       <section
-        className={`bg-white ${
+        className={`bg-white border border-black border-opacity-20 ${
           hidden ? "" : "hidden"
         } absolute left-[335px] bottom-[441px] 
         rounded-md w-[124px] h-[68px] gap-1 grid grid-cols-4 grid-rows-2 p-2 rounded-2`}
@@ -84,9 +85,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#E2E8F0] border text-[hidden] w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#FECACA"}
@@ -97,9 +96,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#FECACA] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#FED7AA"}
@@ -109,9 +106,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#FED7AA] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#FEF08A"}
@@ -121,9 +116,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#FEF08A] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#D9F99D"}
@@ -133,9 +126,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#D9F99D] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#BFDBFE"}
@@ -145,9 +136,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#BFDBFE] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#FBCFE8"}
@@ -157,9 +146,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#FBCFE8] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
         <button
           type="button"
           value={"#DDD6FE"}
@@ -169,9 +156,7 @@ export default function NewBoards() {
             setHidden((prevHidden) => !prevHidden);
           }}
           className="rounded-[50%] bg-[#DDD6FE] border w-6 h-6"
-        >
-          t
-        </button>
+        ></button>
       </section>
     </>
   );
