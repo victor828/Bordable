@@ -1,8 +1,5 @@
 import axios, { Method } from "axios";
 import { ReadonlyURLSearchParams, redirect } from "next/navigation";
-require("dotenv").config();
-
-
 
 // export const url = "http://localhost:5500";
 export const url = process.env.URL
