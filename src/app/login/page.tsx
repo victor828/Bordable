@@ -7,9 +7,6 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  console.log(process.env.URL);
-  console.log(url);
-
   const [responseMessage, setResponseMessage] = useState("");
   const [response2, setResponse2] = useState("");
   const [formData, setFormData] = useState(initialFormData);
@@ -39,6 +36,7 @@ export default function Home() {
       console.error("Error to process the request:", error);
     }
   }
+  useEffect(() => {}, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -93,7 +91,6 @@ export default function Home() {
                   name="username"
                   value={formData.username}
                   placeholder="Username"
-                  // value="lalo"
                   maxLength={10}
                   minLength={3}
                   pattern="[a-zA-Z0-9]+"
@@ -110,7 +107,6 @@ export default function Home() {
                   autoComplete="true"
                   value={formData.password}
                   name="password"
-                  // value="123456"
                   placeholder="Password"
                   minLength={6}
                   onChange={handleChange}
