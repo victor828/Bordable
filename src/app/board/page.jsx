@@ -12,6 +12,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function Board() {
+  token ?? redirect("/login");
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [tables, setTables] = useState([]);
   const [cards, setCards] = useState([]);
@@ -21,14 +23,12 @@ export default function Board() {
   };
   //! useEffect
   useEffect(() => {
-    token ?? redirect("/login");
-
     fetchData();
   }, [tables]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(url + `/board/${paramObj.id}`, {
+      const response = await axios.get(url + `/allboard/${paramObj.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

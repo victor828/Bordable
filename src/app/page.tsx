@@ -3,40 +3,41 @@ import axios from "axios";
 import { BoardFinal } from "./lib/component/boards/boardFinal";
 import { Header } from "./lib/component/header";
 import { inter } from "./lib/ui/fonts";
-import { UseVerifyUser, initialFormData, url, verifyUser } from "@/utils/utils";
+import { token, url } from "@/utils/utils";
 import React, { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
 import NewBoards from "./lib/component/boards/boart";
+import { redirect } from "next/navigation";
 
-const serverUrl = "/board";
 export default function Home() {
+  if (!token) {
+    redirect("/login");
+  }
+
+  const [sort, setSort] = useState("createdate");
   const [data, setData] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const board = `/board/${sort}`;
+
   useEffect(() => {
-    token ?? redirect("/login");
-    fetchData();
-  }, [data]);
+    async function fetchData() {
+      try {
+        const response = await axios.get(url + board, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(url + serverUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      setData(response.data);
-      if (!response) {
-        throw new Error(`Error de red: ${response}`);
+        if (!response) {
+          throw new Error(`Error de red: ${response}`);
+        }
+        setData(response.data);
+      } catch (error) {
+        console.error("Error al realizar la solicitud:", error);
       }
-
-      const data = response;
-    } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
     }
-  };
+    fetchData();
+  }, [sort, board, data]);
 
   return (
     <>
@@ -47,14 +48,17 @@ export default function Home() {
           <div>
             <p>Sort by</p>
             <select
-              defaultValue={"date"}
+              defaultValue={"createdate"}
               title="sort"
               name="sort"
               id="sort"
               className="w-full rounded-md"
+              onChange={(e) => {
+                setSort(e.target.value);
+              }}
             >
-              <option value="date">Date</option>
-              <option value="name">Name</option>
+              <option value="createdate">Date</option>
+              <option value="title">Name</option>
             </select>
           </div>
         </div>
@@ -62,7 +66,7 @@ export default function Home() {
         <div className="flex gap-8 h-full  w-full flex-wrap">
           <NewBoards />
 
-          {data.map((board) => (
+          {data.map((board: { id: number; title: string; color: string }) => (
             <BoardFinal
               key={board.id}
               title={board.title}
