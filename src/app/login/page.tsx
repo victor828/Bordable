@@ -7,6 +7,9 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 
 export default function Home() {
+  console.log(process.env.URL);
+  console.log(url);
+
   const [responseMessage, setResponseMessage] = useState("");
   const [response2, setResponse2] = useState("");
   const [formData, setFormData] = useState(initialFormData);

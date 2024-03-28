@@ -1,9 +1,13 @@
 import axios, { Method } from "axios";
-import {  ReadonlyURLSearchParams, redirect } from "next/navigation";
+import { ReadonlyURLSearchParams, redirect } from "next/navigation";
+require("dotenv").config();
 
 
-export const url = "http://localhost:5500";
-export const token: string | null = localStorage.getItem("token");
+
+// export const url = "http://localhost:5500";
+export const url = process.env.URL
+export const token: string | null = (typeof window !== 'undefined') ? localStorage.getItem("token") : null;
+
 
 
 
