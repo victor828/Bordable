@@ -1,11 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { InitialtableData, token, url } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
-import { OptionsTable } from "./options";
 import { useDrop } from "react-dnd";
-import { useDrag } from "react-dnd";
 
 export default function Table({ title, id, children, height }) {
   const [hidden, setHidden] = useState("hidden");
@@ -19,8 +17,6 @@ export default function Table({ title, id, children, height }) {
     accept: "card",
     drop: async (item, monitor) => {
       const cardId = item.id;
-      // console.log(`el id del card es: ${cardId}`);
-      // console.log(`el id del table es: ${id}`);
       try {
         await axios.patch(
           url + `/card/${cardId}/new-table/${id}`,
@@ -32,7 +28,6 @@ export default function Table({ title, id, children, height }) {
             },
           }
         );
-        console.log(`Card ${cardId} was dropped on table ${id}`);
       } catch (error) {
         console.error(`Error updating card ${cardId}:`, error);
       }
@@ -69,7 +64,7 @@ export default function Table({ title, id, children, height }) {
           },
         }
       );
-      // window.location.reload();
+      hidden === "hidden" ? setHidden("") : setHidden("hidden");
     } catch (error) {
       console.error("Error creating new table:", error);
     }
@@ -81,8 +76,6 @@ export default function Table({ title, id, children, height }) {
     title: dataEx,
   };
   function handleShowOption() {
-    /* // todo: mostrar el menu de opciones 
-            si preciono edit muestro el formlario y escondo el titilo */
     hiddenO === "hidden" ? setHiddenO("") : setHiddenO("hidden");
   }
 
@@ -94,7 +87,6 @@ export default function Table({ title, id, children, height }) {
           "Content-Type": "application/json",
         },
       });
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -125,10 +117,7 @@ export default function Table({ title, id, children, height }) {
   return (
     <div className="relative">
       <div className="grid h-fit" ref={dropRef}>
-        <section
-          className={`rounded-md w-72  p-2 grid   gap-2 bg-[#F5F5F5]`}
-          // style={{ height: height }}
-        >
+        <section className={`rounded-md w-72  p-2 grid   gap-2 bg-[#F5F5F5]`}>
           <div className="flex justify-between items-center text-lg font-bold py-1.5">
             {/* title */}
             <h1
@@ -200,12 +189,6 @@ export default function Table({ title, id, children, height }) {
             >
               Add card
             </button>
-            {/* <button
-              onClick={handleShowNewCard}
-              className=" rounded-md h-9 bg-violet-700 text-white p-2"
-            >
-              Cancel
-            </button> */}
           </div>
         </form>
       </div>

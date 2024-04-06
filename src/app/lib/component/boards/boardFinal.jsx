@@ -2,7 +2,6 @@ import axios from "axios";
 import { inter } from "../../ui/fonts";
 import Link from "next/link";
 import { token, url } from "@/utils/utils";
-import { useEffect } from "react";
 
 export function BoardFinal({ title, color, id }) {
   async function handleDelete(e) {
@@ -14,7 +13,6 @@ export function BoardFinal({ title, color, id }) {
       },
     });
   }
-  useEffect(() => {}, [handleDelete]);
 
   return (
     <>

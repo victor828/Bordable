@@ -1,6 +1,6 @@
 "use client";
 import { UseVerifyUser, token, url } from "@/utils/utils";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Header } from "../lib/component/header";
 import Table from "../lib/component/tables/table";
@@ -12,7 +12,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function Board() {
-  token ?? redirect("/login");
+  const router = useRouter();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [tables, setTables] = useState([]);
@@ -23,39 +23,43 @@ export default function Board() {
   };
   //! useEffect
   useEffect(() => {
-    fetchData();
-  }, [tables]);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(url + `/allboard/${paramObj.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const responseCards = await axios.get(url + `/board/table/card/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const myBoard = await axios.get(url + `/get-board/${paramObj.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      setName(myBoard.data.title);
-      setCards(responseCards.data);
-      setTables(response.data.data);
-    } catch (error) {
-      console.log(error);
+    if (!token) {
+      router.push("/login");
     }
-  };
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(url + `/allboard/${paramObj.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const responseCards = await axios.get(url + `/board/table/card/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const myBoard = await axios.get(url + `/get-board/${paramObj.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        setName(myBoard.data.title);
+        setCards(responseCards.data);
+        setTables(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [tables, router, paramObj.id]);
 
   return (
     <main className=" bg-[#FECACA] h-screen ">

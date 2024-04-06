@@ -6,19 +6,20 @@ import { inter } from "./lib/ui/fonts";
 import { token, url } from "@/utils/utils";
 import React, { useState, useEffect } from "react";
 import NewBoards from "./lib/component/boards/boart";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  if (!token) {
-    redirect("/login");
-  }
-
   const [sort, setSort] = useState("createdate");
   const [data, setData] = useState([]);
+  const router = useRouter();
 
   const board = `/board/${sort}`;
 
   useEffect(() => {
+    if (!token) {
+      router.push("/login");
+    }
+
     async function fetchData() {
       try {
         const response = await axios.get(url + board, {
@@ -27,17 +28,17 @@ export default function Home() {
             "Content-Type": "application/json",
           },
         });
-
-        if (!response) {
-          throw new Error(`Error de red: ${response}`);
+        if (response && response.data) {
+          setData(response.data);
+        } else {
+          console.error("Error de red o respuesta sin datos");
         }
-        setData(response.data);
       } catch (error) {
         console.error("Error al realizar la solicitud:", error);
       }
     }
     fetchData();
-  }, [sort, board, data]);
+  }, [sort, data, board, router]);
 
   return (
     <>

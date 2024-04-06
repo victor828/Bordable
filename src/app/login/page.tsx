@@ -2,13 +2,11 @@
 import { familjen } from "@/app/lib/ui/fonts";
 import Link from "next/link";
 import { initialFormData, token, url } from "@/utils/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { redirect } from "next/navigation";
 
 export default function Home() {
   const [responseMessage, setResponseMessage] = useState("");
-  const [response2, setResponse2] = useState("");
   const [formData, setFormData] = useState(initialFormData);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -17,11 +15,10 @@ export default function Home() {
     setFormData(nextFormData);
   }
 
-  const serverUrl: string = "/login";
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
-      const response = await axios.post(url + serverUrl, formData);
+      const response = await axios.post(url + "/login", formData);
       const response2 = response.data.data;
       const resMessge = response2.message;
       const token = response.data.data.token;
@@ -30,13 +27,14 @@ export default function Home() {
         localStorage.setItem("token", token);
       }
 
-      setResponse2(response2);
       setResponseMessage(resMessge);
+      if (!resMessge) {
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("Error to process the request:", error);
     }
   }
-  useEffect(() => {}, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -93,7 +91,7 @@ export default function Home() {
                   placeholder="Username"
                   maxLength={10}
                   minLength={3}
-                  pattern="[a-zA-Z0-9]+"
+                  pattern="[a-zA-Z0-9]+?"
                   title="Only letters and numbers are allowed"
                   onChange={handleChange}
                   required
@@ -140,14 +138,12 @@ export default function Home() {
           </div>
         </Link>
         <div>
-          {response2 === "" ? (
-            <p className="text-center">┗|｀O′|┛ </p>
-          ) : !responseMessage ? (
-            redirect("/")
-          ) : (
+          {responseMessage ? (
             <p className="w-full bg-[tomato] rounded-md p-2">
               {responseMessage}
             </p>
+          ) : (
+            <p className="text-center">┗|｀O′|┛ </p>
           )}
         </div>
       </div>
