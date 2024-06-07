@@ -2,13 +2,10 @@ import axios, { Method } from "axios";
 import { ReadonlyURLSearchParams, redirect } from "next/navigation";
 
 // export const url = "http://localhost:5500";
-export const url = "https://bordable-backend.onrender.com";
+export const url: string = "https://bordable-backend.onrender.com";
 // export const url = process.env["URL"]
-export const token: string | null = (typeof window !== 'undefined') ? localStorage.getItem("token") : null;
-
-
-
-
+export const token: string | null =
+  typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
 export const initialFormData = {
   username: "",
@@ -47,5 +44,3 @@ export function getParams(searchParams: ReadonlyURLSearchParams) {
   paramObj[paramsArray[0]] = paramsArray[1];
   return paramObj;
 }
-
-
