@@ -2,12 +2,12 @@
 import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { token, url } from "@/utils/utils";
-import { Header } from "../lib/component/header";
-import Table from "../lib/component/tables/table";
-import { inter } from "../lib/ui/fonts";
+import { Header } from "../../lib/component/header";
+import Table from "../../lib/component/tables/table";
+import { inter } from "../../lib/ui/fonts";
 import axios from "axios";
-import NewTable from "../lib/component/tables/newTable";
-import Card from "../lib/component/tables/card";
+import NewTable from "../../lib/component/tables/newTable";
+import Card from "../../lib/component/tables/card";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -24,19 +24,19 @@ interface ITable {
   boardid: string;
 }
 
-const Board: FC = () => {
+const Board = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [searchParams] = useSearchParams();
   const [tables, setTables] = useState<ITable[]>([]);
   const [cards, setCards] = useState<ICard[]>([]);
   const [name, setName] = useState<string>("");
-  const paramObj: {
-    [x: number]: any;
-    id: number;
-  } = {
-    [searchParams[0]]: searchParams[1],
-    id: 0,
-  };
+  // const paramObj: {
+  //   [x: number]: any;
+  //   id: number;
+  // } = {
+  //   [searchParams[0]]: searchParams[1],
+  //   id: 0,
+  // };
 
   useEffect(() => {
     if (!token) {
@@ -45,7 +45,7 @@ const Board: FC = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${url}/allboard/${paramObj.id}}`, {
+        const response = await axios.get(`${url}/allboard/${params.id}}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const Board: FC = () => {
           },
         });
 
-        const myBoard = await axios.get(`${url}/get-board/${paramObj.id}`, {
+        const myBoard = await axios.get(`${url}/get-board/${params.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Board: FC = () => {
     };
 
     fetchData();
-  }, [tables, router, paramObj.id]);
+  }, [tables, router, params.id]);
 
   return (
     <main className='bg-[#FECACA] h-screen'>
