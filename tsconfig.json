@@ -27,10 +27,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/lib/component/boards/boardFinal.jsx",
+    "src/app/lib/component/boards/boardFinal.tsx",
     "src/app/page.jsx",
     "src/app/board/page.jsx",
-    "src/app/lib/component/tables/table.tsx",
+    "src/app/lib/component/tables/table.jsx",
     "src/app/account/page.tsx",
     "src/app/lib/component/tables/newTable.tsx",
     "src/app/lib/component/tables/options.jsx"
