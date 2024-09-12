@@ -21,7 +21,7 @@ export default function Board() {
   const paramObj = {
     [searchParams[0]]: searchParams[1],
   };
-  //! useEffect
+  // ! useEffect
   useEffect(() => {
     if (!token) {
       router.push("/login");
@@ -62,15 +62,15 @@ export default function Board() {
   }, [tables, router, paramObj.id]);
 
   return (
-    <main className=" bg-[#FECACA] h-screen ">
+    <main className=' bg-[#FECACA] h-screen '>
       <Header />
-      <div className="max-w-[90%] m-auto py-4 grid gap-8 ">
-        <div className="flex gap-2 ">
+      <div className='max-w-[90%] m-auto py-4 grid gap-8 '>
+        <div className='flex gap-2 '>
           <h1 className={`${inter.className} font-bold text-2xl`}>{name}</h1>
         </div>
 
         {/* cuerpo*/}
-        <div className="flex gap-4 ">
+        <div className='flex gap-4 '>
           <DndProvider backend={HTML5Backend}>
             {/* <Options /> */}
             {/* //! function to render tables and cards, DONT TOCH! */}
@@ -83,8 +83,7 @@ export default function Board() {
                     key={table.id}
                     id={table.id}
                     title={table.title}
-                    cards={table.cardscount}
-                  >
+                    cards={table.cardscount}>
                     {cards &&
                       cards.map((card) => {
                         if (card.tableid === table.id) {
